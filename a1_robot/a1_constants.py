@@ -13,28 +13,43 @@ INIT_POSITION = [0, 0, 0.48]
 INIT_ORIENTATION = [0, 0, 0, 1]
 
 
+# MOTOR_NAMES = [
+#             "FR_hip_joint",
+#             "FR_upper_joint",
+#             "FR_lower_joint",
+#             "FL_hip_joint",
+#             "FL_upper_joint",
+#             "FL_lower_joint",
+#             "RR_hip_joint",
+#             "RR_upper_joint",
+#             "RR_lower_joint",
+#             "RL_hip_joint",
+#             "RL_upper_joint",
+#             "RL_lower_joint",
+#         ]
+
 MOTOR_NAMES = [
-            "FR_hip_joint",
-            "FR_upper_joint",
-            "FR_lower_joint",
             "FL_hip_joint",
             "FL_upper_joint",
             "FL_lower_joint",
-            "RR_hip_joint",
-            "RR_upper_joint",
-            "RR_lower_joint",
+            "FR_hip_joint",
+            "FR_upper_joint",
+            "FR_lower_joint",
             "RL_hip_joint",
             "RL_upper_joint",
             "RL_lower_joint",
+            "RR_hip_joint",
+            "RR_upper_joint",
+            "RR_lower_joint"
         ]
 
 JOINT_NAMES = MOTOR_NAMES
 
 END_EFFECTOR_NAMES = [
-            "FR_toe_fixed",
             "FL_toe_fixed",
+            "FR_toe_fixed",
+            "RL_toe_fixed",
             "RR_toe_fixed",
-            "RL_toe_fixed"
         ]
 
 HIP_JOINT_OFFSET = 0.0
@@ -48,7 +63,7 @@ JOINT_OFFSETS = collections.OrderedDict(
 
 
 JOINT_DIRECTIONS = collections.OrderedDict(
-    zip(JOINT_NAMES, (-1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1)))
+    zip(JOINT_NAMES, (1, 1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1)))
 
 INIT_ABDUCTION_ANGLE = 0
 INIT_HIP_ANGLE = 0.9
@@ -59,12 +74,15 @@ INIT_JOINT_ANGLES = collections.OrderedDict(
         (INIT_ABDUCTION_ANGLE, INIT_HIP_ANGLE, INIT_KNEE_ANGLE) * NUM_LEGS))
 
 LEG_NAMES = (
-    "front_right",
     "front_left",
-    "rear_right",
+    "front_right",
     "rear_left",
+    "rear_right"
 )
 
+ROS_NODE_NAME = "a1_pybullet"
+ROS_MOTOR_ANG_TOPIC = "motor_angle"
+ROS_MOTOR_VEL_TOPIC = "motor_vel"
 
 MOTOR_GROUP = collections.OrderedDict((
     (LEG_NAMES[0], JOINT_NAMES[0:3]),

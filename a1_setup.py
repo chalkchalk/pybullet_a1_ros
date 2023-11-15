@@ -6,7 +6,7 @@ from pybullet_envs.minitaur.robots import robot_config
 import pybullet_data as pd
 
 import sys
-sys.path.append("/root/docker_mount/a1_learn/a1_robot")
+sys.path.append("/root/docker_mount/pybullet_a1_ros/a1_robot")
 
 CONFIG_FILE = ("config/a1_default.gin")
 # CONFIG_FILE = ("config/laikago_with_imu.gin")
