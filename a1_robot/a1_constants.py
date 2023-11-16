@@ -100,6 +100,7 @@ ROS_MOTOR_VEL_TOPIC = "motor_vel"
 ROS_JOINTSTATE_TOPIC = "joint_states"
 ROS_FOOT_CONTACT_FORCE_TOPIC = ["FL_foot_force","FR_foot_force","RL_foot_force","RR_foot_force"]
 ROS_IMU_TOPIC = "imu"
+ROS_SET_TORQUE_TOPIC = "set_torque"
 
 MOTOR_GROUP = collections.OrderedDict((
     (LEG_NAMES[0], JOINT_NAMES[0:3]),

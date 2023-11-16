@@ -7,8 +7,7 @@ from ros_wrapper import RosWrapper, ROSDtype, RobotJointState, ImuData
 class A1(quadruped_base.QuadrupedBase):
 
     def _pre_load(self):
-        """Import the Laikago specific constants.
-        """
+
         self._urdf_loader = robot_urdf_loader.RobotUrdfLoader(
                 pybullet_client=self._pybullet_client,
                 urdf_path=a1_constants.URDF_PATH,
@@ -22,21 +21,20 @@ class A1(quadruped_base.QuadrupedBase):
                 end_effector_names=a1_constants.END_EFFECTOR_NAMES,
                 user_group=a1_constants.MOTOR_GROUP,
         )
+        self.set_torque = [[0 for i in range(a1_constants.NUM_MOTORS)]]
         self.ros_wrapper_init()
+        
 
     def ros_wrapper_init(self):
         self.ros_wrapper = RosWrapper(a1_constants.ROS_NODE_NAME)
-        self.ros_wrapper.add_publisher(a1_constants.ROS_MOTOR_ANG_TOPIC, ROSDtype.FLOAT_ARRAY)
-        self.ros_wrapper.add_publisher(a1_constants.ROS_MOTOR_VEL_TOPIC, ROSDtype.FLOAT_ARRAY)
         self.ros_wrapper.add_publisher(a1_constants.ROS_JOINTSTATE_TOPIC, ROSDtype.JOINT_STATE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[0], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[1], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[2], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[3], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_IMU_TOPIC, ROSDtype.IMU)
+        self.ros_wrapper.add_subscriber(a1_constants.ROS_SET_TORQUE_TOPIC, ROSDtype.FLOAT_ARRAY, self.set_torque)
         
-        
-
     def ros_info_pub(self):
         motor_angles = self.motor_angles # FL FR RL RR for ros
         motor_vel = self.motor_velocities
@@ -47,7 +45,6 @@ class A1(quadruped_base.QuadrupedBase):
         orientation = self.base_orientation_quaternion_default_frame
         angel_vel_rpy = self.base_roll_pitch_yaw_rate
         imu_data = ImuData(orientation, angel_vel_rpy, com_acc)
-        self.ros_wrapper.publish_msg(a1_constants.ROS_MOTOR_ANG_TOPIC, motor_angles)
         self.ros_wrapper.publish_msg(a1_constants.ROS_JOINTSTATE_TOPIC, joint_state)
         self.ros_wrapper.publish_msg(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[0], contact_forces[0])
         self.ros_wrapper.publish_msg(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[1], contact_forces[1])
@@ -59,7 +56,6 @@ class A1(quadruped_base.QuadrupedBase):
         
     def post_control_step(self):
         self.ros_info_pub()
-        
 
     @classmethod
     def get_constants(cls):
