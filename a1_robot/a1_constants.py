@@ -1,7 +1,8 @@
 import collections
 import gin
 
-URDF_PATH = "a1/a1.urdf"
+# URDF_PATH = "a1/a1.urdf"
+URDF_PATH = "/root/docker_mount/pybullet_a1_ros/a1_robot/urdf/a1.urdf"
 NUM_MOTORS = 12
 NUM_LEGS = 4
 MOTORS_PER_LEG = 3
@@ -28,28 +29,41 @@ INIT_ORIENTATION = [0, 0, 0, 1]
 #             "RL_lower_joint",
 #         ]
 
-MOTOR_NAMES = [
-            "FL_hip_joint",
-            "FL_upper_joint",
-            "FL_lower_joint",
-            "FR_hip_joint",
-            "FR_upper_joint",
-            "FR_lower_joint",
-            "RL_hip_joint",
-            "RL_upper_joint",
-            "RL_lower_joint",
-            "RR_hip_joint",
-            "RR_upper_joint",
-            "RR_lower_joint"
-        ]
+# MOTOR_NAMES = [
+#             "FL_hip_joint",
+#             "FL_upper_joint",
+#             "FL_lower_joint",
+#             "FR_hip_joint",
+#             "FR_upper_joint",
+#             "FR_lower_joint",
+#             "RL_hip_joint",
+#             "RL_upper_joint",
+#             "RL_lower_joint",
+#             "RR_hip_joint",
+#             "RR_upper_joint",
+#             "RR_lower_joint"
+#         ]
+
+MOTOR_NAMES = ["FL_hip_joint", "FL_thigh_joint", "FL_calf_joint",
+            "FR_hip_joint", "FR_thigh_joint", "FR_calf_joint",
+            "RL_hip_joint", "RL_thigh_joint", "RL_calf_joint",
+            "RR_hip_joint", "RR_thigh_joint", "RR_calf_joint"]
+
 
 JOINT_NAMES = MOTOR_NAMES
 
+# END_EFFECTOR_NAMES = [
+#             "FL_toe_fixed",
+#             "FR_toe_fixed",
+#             "RL_toe_fixed",
+#             "RR_toe_fixed",
+#         ]
+
 END_EFFECTOR_NAMES = [
-            "FL_toe_fixed",
-            "FR_toe_fixed",
-            "RL_toe_fixed",
-            "RR_toe_fixed",
+            "FL_foot_fixed",
+            "FR_foot_fixed",
+            "RL_foot_fixed",
+            "RR_foot_fixed",
         ]
 
 HIP_JOINT_OFFSET = 0.0
@@ -83,6 +97,9 @@ LEG_NAMES = (
 ROS_NODE_NAME = "a1_pybullet"
 ROS_MOTOR_ANG_TOPIC = "motor_angle"
 ROS_MOTOR_VEL_TOPIC = "motor_vel"
+ROS_JOINTSTATE_TOPIC = "joint_states"
+ROS_FOOT_CONTACT_FORCE_TOPIC = ["FL_foot_force","FR_foot_force","RL_foot_force","RR_foot_force"]
+ROS_IMU_TOPIC = "imu"
 
 MOTOR_GROUP = collections.OrderedDict((
     (LEG_NAMES[0], JOINT_NAMES[0:3]),
