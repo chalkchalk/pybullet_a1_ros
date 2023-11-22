@@ -5,7 +5,10 @@ from pybullet_envs.minitaur.robots import quadruped_base
 from pybullet_envs.minitaur.robots import robot_urdf_loader
 from ros_wrapper.ros_wrapper import RosWrapper
 from ros_wrapper.ros_wrapper import RosWrapper
-from ros_wrapper.ros_msg import ROSDtype, RobotJointState, ImuData
+from ros_wrapper.ros_msg import ROSDtype, RobotJointState, ImuData, ROSClock
+
+
+
 @gin.configurable
 class A1(quadruped_base.QuadrupedBase):
 
@@ -29,7 +32,7 @@ class A1(quadruped_base.QuadrupedBase):
         
 
     def ros_wrapper_init(self):
-        self.ros_wrapper = RosWrapper(a1_constants.ROS_NODE_NAME)
+        self.ros_wrapper = RosWrapper(a1_constants.ROS_NODE_NAME, publish_time=True)
         self.ros_wrapper.add_publisher(a1_constants.ROS_JOINTSTATE_TOPIC, ROSDtype.JOINT_STATE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[0], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[1], ROSDtype.FORCE)
@@ -48,6 +51,8 @@ class A1(quadruped_base.QuadrupedBase):
         orientation = self.base_orientation_quaternion_default_frame
         angel_vel_rpy = self.base_roll_pitch_yaw_rate
         imu_data = ImuData(orientation, angel_vel_rpy, com_acc)
+        self.ros_wrapper.update_time(self.timestamp)
+        self.ros_wrapper.publish_clock()
         self.ros_wrapper.publish_msg(a1_constants.ROS_JOINTSTATE_TOPIC, joint_state)
         self.ros_wrapper.publish_msg(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[0], contact_forces[0])
         self.ros_wrapper.publish_msg(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[1], contact_forces[1])

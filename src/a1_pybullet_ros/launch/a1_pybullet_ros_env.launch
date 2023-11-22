@@ -1,7 +1,7 @@
 <launch>
     <arg name="use_rviz" default="true" />
     <arg name="user_debug" default="false"/>
-    <param name="/use_sim_time" value="false"/>
+    <param name="/use_sim_time" value="true"/>
 
     <param name="robot_description"
            command="$(find xacro)/xacro '$(find a1_pybullet_ros)/script/a1_robot/xacro/robot.xacro'

@@ -1,13 +1,15 @@
 import rospy
 import numpy as np
-from ros_wrapper.ros_msg import ROSDtype, RobotJointState, ImuData, data_to_ros_msg
+from ros_wrapper.ros_msg import ROSDtype, RobotJointState, ImuData, data_to_ros_msg, ROSClock
 from std_msgs.msg import Float64MultiArray, Float64
 from sensor_msgs.msg import JointState, Imu
 from geometry_msgs.msg import WrenchStamped
 import time
 
+ROS_CLOCK_TOPIC = "clock"
+
 class RosWrapper:
-    def __init__(self, rosnode_name): #if rosnode_name is empty, ros_init will not be called, since only one node for each script
+    def __init__(self, rosnode_name, publish_time = False): #if rosnode_name is empty, ros_init will not be called, since only one node for each script
         self.publishers = {} # name: [dtype, publisher]
         self.subscribers = {} # name: dtype, data
         self.rosnode_name = rosnode_name
@@ -16,6 +18,8 @@ class RosWrapper:
         if rosnode_name:
             rospy.init_node(rosnode_name)
             rospy.loginfo("ROS wrapper init, node name = " + rosnode_name + ".")
+        if publish_time:
+            self.add_publisher(ROS_CLOCK_TOPIC, ROSDtype.CLOCK, False)
 
     def add_publisher(self, topic, dtype, use_namespace=True, queue=5):
         full_topic = topic
@@ -23,6 +27,10 @@ class RosWrapper:
             full_topic = self.rosnode_name + '/' + topic
         pub = rospy.Publisher(full_topic, dtype.value, queue_size=queue)
         self.publishers[topic] = [dtype, pub]
+
+    def publish_clock(self):
+        assert ROS_CLOCK_TOPIC in self.publishers, "ros tim publishing not enabled!"
+        self.publish_msg(ROS_CLOCK_TOPIC, ROSClock(self.ros_time))
 
     def add_subscriber(self, topic, dtype, data_handle, use_namespace=True):
         """
@@ -48,6 +56,9 @@ class RosWrapper:
     def publish_msg(self, topic, msg):
         assert topic in self.publishers, "topic not registered!"
         self.publishers[topic][1].publish(data_to_ros_msg(msg, self.publishers[topic][0], self.ros_time))
+    
+    def update_time(self, time):
+        self.ros_time = time
 
 if __name__ == "__main__":
     wrapper = RosWrapper("test_node")
