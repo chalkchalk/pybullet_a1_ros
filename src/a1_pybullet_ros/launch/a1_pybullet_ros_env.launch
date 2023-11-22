@@ -1,0 +1,17 @@
+<launch>
+    <arg name="use_rviz" default="true" />
+    <arg name="user_debug" default="false"/>
+    <param name="/use_sim_time" value="false"/>
+
+    <param name="robot_description"
+           command="$(find xacro)/xacro '$(find a1_pybullet_ros)/script/a1_robot/xacro/robot.xacro'
+           DEBUG:=$(arg user_debug)"/>
+    
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <remap from="/joint_states" to="/a1_pybullet/joint_states"/>
+        <param name="use_tf_static" value="true"/>
+    </node>
+
+    <node pkg="a1_pybullet_ros" type="a1_sim.py" name="a1_pybullet" output="screen"/>
+
+</launch>
