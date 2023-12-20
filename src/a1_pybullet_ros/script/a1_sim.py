@@ -10,4 +10,5 @@ env = locomotion_gym_env.LocomotionGymEnv()
 env.reset()
 
 while True:
-    env.step(env.robot.set_torque)
+    env.step(env.robot.set_torque[0])
+    # time.sleep(0.0001)

@@ -27,7 +27,7 @@ class A1(quadruped_base.QuadrupedBase):
                 end_effector_names=a1_constants.END_EFFECTOR_NAMES,
                 user_group=a1_constants.MOTOR_GROUP,
         )
-        self.set_torque = [0 for i in range(a1_constants.NUM_MOTORS)]
+        self.set_torque = [[0 for i in range(a1_constants.NUM_MOTORS)]]
         self.ros_wrapper_init()
         
 
@@ -39,7 +39,7 @@ class A1(quadruped_base.QuadrupedBase):
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[2], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_FOOT_CONTACT_FORCE_TOPIC[3], ROSDtype.FORCE)
         self.ros_wrapper.add_publisher(a1_constants.ROS_IMU_TOPIC, ROSDtype.IMU)
-        self.ros_wrapper.add_subscriber(a1_constants.ROS_SET_TORQUE_TOPIC, ROSDtype.FLOAT_ARRAY, [self.set_torque])
+        self.ros_wrapper.add_subscriber(a1_constants.ROS_SET_TORQUE_TOPIC, ROSDtype.FLOAT_ARRAY, self.set_torque)
         
     def ros_info_pub(self):
         motor_angles = self.motor_angles # FL FR RL RR for ros

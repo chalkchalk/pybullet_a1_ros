@@ -11,7 +11,7 @@ import pybullet_envs.minitaur.robots.robot_config
 URDF_ROOT = ""
 UPPER_BOUND = 60.28318548203
 LOWER_BOUND = -60.28318548203
-SIM_TIME_STEP = 0.0025
+SIM_TIME_STEP = 0.00025
 NUM_ACTION_REPEAT = 1
 
 
